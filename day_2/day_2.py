@@ -14,7 +14,7 @@ class Validation:
     password: str
 
     def is_valid_count(self):
-        count = self.password.count(char)
+        count = self.password.count(self.char)
         return self.min <= count <= self.max
 
     def is_valid_idx(self):
@@ -39,10 +39,14 @@ def validation_from_raw_string(string):
 
 
 records = file_lines_as_list("day_2_input.txt")
-valid_passwords = 0
-for el in records:
-    validation = validation_from_raw_string(el)
-    if validation.is_valid_idx():
-        valid_passwords += 1
+validations = (validation_from_raw_string(v) for v in records)
+filtered = (v for v in validations if v.is_valid_idx())
+print(len(list(filtered)))
 
-print(valid_passwords)
+# valid_passwords = 0
+# for el in records:
+#     validation = validation_from_raw_string(el)
+#     if validation.is_valid_idx():
+#         valid_passwords += 1
+#
+# print(valid_passwords)
