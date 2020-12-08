@@ -7,9 +7,8 @@ from file_reader import file_lines_as_list
 def parse_line(line):
     split = line.split(" ")
     instruction = Instruction(split[0])
-    sign = Sign(split[1][:1])
-    value = int(split[1][1:])
-    return Input(instruction, sign, value)
+    value = int(split[1])
+    return Input(instruction, value)
 
 
 class Instruction(Enum):
@@ -18,23 +17,9 @@ class Instruction(Enum):
     jump = "jmp"
 
 
-class Sign(Enum):
-    add = "+"
-    sub = "-"
-
-    def apply(self, data):
-        if self == Sign.sub:
-            return -data
-        elif self == Sign.add:
-            return data
-        else:
-            raise Exception("only implemented for +/-")
-
-
 @dataclass
 class Input:
     instruction: Instruction
-    sign: Sign
     value: int
 
 
@@ -52,10 +37,10 @@ def try_solve(input_lines):
         if instruction_line.instruction == Instruction.no_op:
             idx += 1
         elif instruction_line.instruction == Instruction.accumulate:
-            accum += instruction_line.sign.apply(instruction_line.value)
+            accum += instruction_line.value
             idx += 1
         elif instruction_line.instruction == Instruction.jump:
-            idx += instruction_line.sign.apply(instruction_line.value)
+            idx += instruction_line.value
 
 
 lines = file_lines_as_list("input.txt")
